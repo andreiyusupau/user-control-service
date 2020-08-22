@@ -6,4 +6,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(itemResourceRel = "user",collectionResourceRel ="users",  path="users" )
 public interface UserAccountRepository extends PagingAndSortingRepository<UserAccount,Long> {
+    UserAccount findByUsername(String username);
 }
