@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List</title>
+</head>
+<body>
+
+<table>
+    <thead>
+    <tr>
+        <th> id </th>
+        <th> Username </th>
+        <th> First name </th>
+        <th> Last name </th>
+        <th> Role </th>
+        <th> Status </th>
+        <th> Created at </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${userAccounts.empty}">
+        <td colspan="2"> No user accounts available </td>
+    </tr>
+    <tr th:each="userAccount : ${userAccounts}">
+        <td><span th:text="${userAccount.id}"> id </span></td>
+        <td><span th:text="${userAccount.username}"> Username </span></td>
+        <td><span th:text="${userAccount.firstName}"> First name </span></td>
+        <td><span th:text="${userAccount.lastName}"> Last name </span></td>
+        <td><span th:text="${userAccount.role}"> Role </span></td>
+        <td><span th:text="${userAccount.status}"> Status </span></td>
+        <td><span th:text="${userAccount.createdAt}"> Created At </span></td>
+    </tr>
+    </tbody>
+</table>
+
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+</body>
+</html>
