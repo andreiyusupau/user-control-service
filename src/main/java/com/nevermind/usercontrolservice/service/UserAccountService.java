@@ -5,6 +5,9 @@ import com.nevermind.usercontrolservice.domain.Status;
 import com.nevermind.usercontrolservice.domain.UserAccount;
 import com.nevermind.usercontrolservice.repository.UserAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,9 +22,9 @@ import java.util.Optional;
 @Service
 public class UserAccountService implements UserDetailsService {
 
-@Autowired
+    @Autowired
     private UserAccountRepository userAccountRepository;
-@Autowired
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
 
@@ -45,25 +48,20 @@ public class UserAccountService implements UserDetailsService {
 
         userAccount.setStatus(Status.ACTIVE);
         userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
-userAccount.setCreatedAt(LocalDate.now());
+        userAccount.setCreatedAt(LocalDate.now());
         userAccountRepository.save(userAccount);
 
         return true;
     }
 
-    public Iterable<UserAccount> findAll(Optional<String> username,Optional<Role> role) {
-     //  return userAccountRepository.findAllByUsernameOrRole(username,role);
-        if(username.isPresent()
-                &&role.isPresent()
-                &&!username.get().isEmpty()){
-           return userAccountRepository.findAllByUsernameAndRole(username.get(),role.get());
-        }else if(username.isPresent()
-                &&!username.get().isEmpty()){
-           return Collections.singleton(userAccountRepository.findByUsername(username.get()));
-        }else if(role.isPresent()){
-          return   userAccountRepository.findAllByRole(role.get());
-        }else {
-           return userAccountRepository.findAll();
+    public Page<UserAccount> findAll(Optional<String> username, Optional<Role> role, Pageable pageable) {
+        if (username.isPresent()
+                && !username.get().isEmpty()) {
+            return new PageImpl<>(Collections.singletonList(userAccountRepository.findByUsername(username.get())));
+        } else if (role.isPresent()) {
+            return userAccountRepository.findAllByRole(role.get(), pageable);
+        } else {
+            return userAccountRepository.findAll(pageable);
         }
 
     }
@@ -73,6 +71,6 @@ userAccount.setCreatedAt(LocalDate.now());
     }
 
     public Optional<UserAccount> findById(Long id) {
-      return   userAccountRepository.findById(id);
+        return userAccountRepository.findById(id);
     }
 }

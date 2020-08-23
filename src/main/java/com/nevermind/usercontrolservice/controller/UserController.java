@@ -3,6 +3,10 @@ package com.nevermind.usercontrolservice.controller;
 import com.nevermind.usercontrolservice.domain.Role;
 import com.nevermind.usercontrolservice.domain.UserAccount;
 import com.nevermind.usercontrolservice.service.UserAccountService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +19,7 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
 
     private final UserAccountService userAccountService;
@@ -23,19 +28,29 @@ public class UserController {
         this.userAccountService = userAccountService;
     }
 
-    @GetMapping(path="/list")
-    public String getAllUserAccounts(@RequestParam Optional<String> username, @RequestParam Optional<Role> role, Model model) {
-        model.addAttribute("userAccounts", userAccountService.findAll(username,role));
+    @GetMapping
+    public String getAllUserAccounts(@RequestParam Optional<String> username,
+                                     @RequestParam Optional<Role> role,
+                                     Model model,
+                                     @PageableDefault(size=1) Pageable pageable) {
+        Page<UserAccount> page=userAccountService.findAll(username,role,pageable);
+        model.addAttribute("page", page);
+        model.addAttribute("userAccounts", page.getContent());
         return "list";
     }
 
-    @PostMapping(path="/list")
-    public String filterUserAccounts(@RequestParam Optional<String> username, @RequestParam Optional<Role> role, Model model) {
-        model.addAttribute("userAccounts", userAccountService.findAll(username,role));
+    @PostMapping
+    public String filterUserAccounts(@RequestParam Optional<String> username,
+                                     @RequestParam Optional<Role> role,
+                                     Model model,
+                                     @PageableDefault(size=1) Pageable pageable) {
+        Page<UserAccount> page=userAccountService.findAll(username,role,pageable);
+        model.addAttribute("page", page);
+        model.addAttribute("userAccounts", page.getContent());
         return "list";
     }
 
-    @GetMapping(path="/user/{id}")
+    @GetMapping("/{id}")
     public String getUserAccount(@PathVariable Long id, Model model) {
         Optional<UserAccount> userAccount= userAccountService.findById(id);
         userAccount.ifPresent(account -> model.addAttribute("userAccount", account));
@@ -44,14 +59,14 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping(path="/user/new")
+    @GetMapping("/new")
     public String createUserAccount(Model model) {
         model.addAttribute("userAccount",new UserAccount());
         return "new";
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping(path="/user/new")
+    @PostMapping("/new")
     public @ResponseBody String addUserAccount(@Valid @ModelAttribute UserAccount userAccount, BindingResult bindingResult) {
     if (bindingResult.hasErrors()){
         System.out.println(bindingResult.getAllErrors());
@@ -75,7 +90,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping(path="/user/{id}/edit")
+    @GetMapping("/{id}/edit")
     public String editUserAccount(@PathVariable Long id, Model model) {
         Optional<UserAccount> userAccount= userAccountService.findById(id);
         userAccount.ifPresent(account -> model.addAttribute("userAccount", account));
@@ -83,7 +98,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PutMapping(path="/user/{id}/edit")
+    @PutMapping("/{id}/edit")
     public @ResponseBody String updateUserAccount(@PathVariable Long id,@ModelAttribute UserAccount userAccount) {
         userAccountService.save(userAccount);
         return "Edited";
