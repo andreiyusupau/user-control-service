@@ -1,25 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org" lang="en">
 <head>
-<!--    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />-->
+    <!--    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />-->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet"
-          href="/webjars/bootstrap/4.5.2/css/bootstrap.min.css" />
+          href="/webjars/bootstrap/4.5.2/css/bootstrap.min.css"/>
     <title>Create User Account</title>
 </head>
 <body>
 <h1>Create New User Account</h1>
 
 <form action="#" th:action="@{/user/new}" th:object="${userAccount}" method="post">
-    <p>Username: <input type="text" th:field="*{username}" /></p>
-    <p>Password: <input type="text" th:field="*{password}" /></p>
-    <p>First name: <input type="text" th:field="*{firstName}" /></p>
-    <p>Last name: <input type="text" th:field="*{lastName}" /></p>
+    <p>Username: <input type="text" th:field="*{username}"/></p>
+    <div class="alert alert-warning">
+        <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</p>
+    </div>
+    <p>Password: <input type="password" th:field="*{password}"/></p>
+    <div class="alert alert-warning">
+        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</p>
+    </div>
+    <p>First name: <input type="text" th:field="*{firstName}"/></p>
+    <div class="alert alert-warning">
+        <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name Error</p>
+    </div>
+    <p>Last name: <input type="text" th:field="*{lastName}"/></p>
+    <div class="alert alert-warning">
+        <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last name Error</p>
+    </div>
     <p>Role: <select th:field="*{role}">
         <option th:value="'USER'" th:text="User"></option>
         <option th:value="'ADMIN'" th:text="Admin"></option>
     </select></p>
-    <input type="submit" value="Create" />
+    <input type="submit" value="Create"/>
 </form>
 <script src="/webjars/popper.js/2.0.2/umd/popper.min.js"></script>
 <script src="/webjars/jquery/3.5.1/jquery.min.js"></script>

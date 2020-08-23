@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
@@ -67,26 +68,13 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/new")
-    public @ResponseBody String addUserAccount(@Valid @ModelAttribute UserAccount userAccount, BindingResult bindingResult) {
+    public String addUserAccount(@Valid @ModelAttribute  UserAccount userAccount, BindingResult bindingResult) {
     if (bindingResult.hasErrors()){
-        System.out.println(bindingResult.getAllErrors());
-        for (Object object : bindingResult.getAllErrors()) {
-            if(object instanceof FieldError) {
-                FieldError fieldError = (FieldError) object;
-
-                System.out.println(fieldError.getCode());
-            }
-
-            if(object instanceof ObjectError) {
-                ObjectError objectError = (ObjectError) object;
-
-                System.out.println(objectError.getCode());
-            }
-        }
+       return "new";
     }else {
         userAccountService.add(userAccount);
     }
-        return "Saved";
+        return "list";
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -99,7 +87,7 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}/edit")
-    public @ResponseBody String updateUserAccount(@PathVariable Long id,@ModelAttribute UserAccount userAccount) {
+    public @ResponseBody String updateUserAccount(@ModelAttribute UserAccount userAccount) {
         userAccountService.save(userAccount);
         return "Edited";
     }
