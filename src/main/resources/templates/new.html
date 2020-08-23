@@ -6,11 +6,10 @@
 </head>
 <body>
 <h1>Create New User Account</h1>
-<!--/*@thymesVar id="userAccount" type="com.nevermind.usercontrolservice.domain.UserAccount"*/-->
-<form action="#" th:action="@{/user/new}" th:object="${userAccount}" method="post">
-    <p> Username: <input type="text" th:field="*{username}" /></p>
-    <p>Password: <input type="text" th:field="*{password}" /></p>
 
+<form action="#" th:action="@{/user/new}" th:object="${userAccount}" method="post">
+    <p>Username: <input type="text" th:field="*{username}" /></p>
+    <p>Password: <input type="text" th:field="*{password}" /></p>
     <p>First name: <input type="text" th:field="*{firstName}" /></p>
     <p>Last name: <input type="text" th:field="*{lastName}" /></p>
     <p>Role: <select th:field="*{role}">
