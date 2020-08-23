@@ -4,6 +4,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
@@ -15,9 +18,25 @@ public class UserAccount implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotBlank(message="Username can't be empty")
+    @Size(min=3, max=16,message="Username length must be between 3 and 16")
+    @Column(unique = true)
+    @Pattern(regexp = "[a-zA-Z]+",message="Username may contain latin letters only")
     private String username;
+    @NotBlank(message="Password can't be empty")
+    @Size(min=3, max=16,message="Password length must be between 3 and 16")
+    @Pattern(regexp ="([A-Za-z]+[0-9]|[0-9]+[A-Za-z])[A-Za-z0-9]*",message="Password should contain minimum 1 letter and 1 digit, use only latin letters")
     private String password;
+    @Transient
+    @NotBlank
+    private String confirmPassword;
+    @NotBlank(message="First name can't be empty")
+    @Size(min=1, max=16,message="First name length must be between 3 and 16")
+    @Pattern(regexp = "[a-zA-Z]+",message="First name may contain latin letters only")
     private String firstName;
+    @NotBlank(message="Last name can't be empty")
+    @Size(min=1, max=16,message="Last name length must be between 3 and 16")
+    @Pattern(regexp = "[a-zA-Z]+",message="Last name may contain latin letters only")
     private String lastName;
     private Role role;
     private Status status;
