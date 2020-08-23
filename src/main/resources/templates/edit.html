@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org" lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet"
+          href="/webjars/bootstrap/4.5.2/css/bootstrap.min.css" />
     <title>Edit</title>
+
 </head>
 <body>
 <form th:action="@{/user/{id}/edit}" th:object="${userAccount}" method="post">
@@ -20,5 +24,8 @@
     </select></p>
     <input type="submit" value="Update" />
 </form>
+<script src="/webjars/popper.js/2.0.2/umd/popper.min.js"></script>
+<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
