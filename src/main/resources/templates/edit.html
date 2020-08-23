@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Edit</title>
 </head>
 <body>
 <form th:action="@{/user/{id}/edit}" th:object="${userAccount}" method="post">
-    <p th:text="*{id}"></p>
-    <p> Username: <input type="text" th:field="*{username}" /></p>
-    <p>Password: <input type="text" th:field="*{password}" /></p>
-
+    <p th:text="'ID: '+*{id}"></p>
+    <p>Username: <input type="text" th:field="*{username}" /></p>
     <p>First name: <input type="text" th:field="*{firstName}" /></p>
     <p>Last name: <input type="text" th:field="*{lastName}" /></p>
     <p>Role: <select th:field="*{role}">
-        <option th:value="'User'" th:text="USER"></option>
-        <option th:value="'Admin'" th:text="ADMIN"></option>
+        <option th:value="'USER'" th:text="User"></option>
+        <option th:value="'ADMIN'" th:text="Admin"></option>
     </select></p>
-    <input type="submit" value="Create" />
+    <p>Status: <select th:field="*{status}">
+        <option th:value="'ACTIVE'" th:text="Active"></option>
+        <option th:value="'INACTIVE'" th:text="Inactive"></option>
+    </select></p>
+    <input type="submit" value="Update" />
 </form>
 </body>
 </html>
