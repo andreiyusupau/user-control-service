@@ -1,15 +1,25 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>List</title>
+    <title>User Account List</title>
 </head>
 <body>
+
+<form action="#" th:action="@{/list}" method="post">
+    <p>Username: <input type="text" th:name="username" /></p>
+    <p>Role: <select th:name="role">
+        <option></option>
+        <option th:value="'USER'" th:text="User"></option>
+        <option th:value="'ADMIN'" th:text="Admin"></option>
+    </select></p>
+    <input type="submit" value="Filter" />
+</form>
 
 <table>
     <thead>
     <tr>
-        <th> id </th>
+        <th> ID </th>
         <th> Username </th>
         <th> First name </th>
         <th> Last name </th>
@@ -20,7 +30,7 @@
     </thead>
     <tbody>
     <tr th:if="${userAccounts.empty}">
-        <td colspan="2"> No user accounts available </td>
+        <td colspan="7"> No user accounts available </td>
     </tr>
     <tr th:each="userAccount : ${userAccounts}">
         <td><span th:text="${userAccount.id}"> id </span></td>

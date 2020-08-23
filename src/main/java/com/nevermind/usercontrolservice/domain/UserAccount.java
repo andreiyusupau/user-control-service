@@ -38,7 +38,9 @@ public class UserAccount implements UserDetails {
     @Size(min=1, max=16,message="Last name length must be between 3 and 16")
     @Pattern(regexp = "[a-zA-Z]+",message="Last name may contain latin letters only")
     private String lastName;
+    @Enumerated(EnumType.STRING)
     private Role role;
+    @Enumerated(EnumType.STRING)
     private Status status;
     private LocalDate createdAt;
 
