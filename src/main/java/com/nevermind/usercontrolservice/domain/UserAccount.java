@@ -28,7 +28,6 @@ public class UserAccount implements UserDetails {
     @Pattern(regexp ="([A-Za-z]+[0-9]|[0-9]+[A-Za-z])[A-Za-z0-9]*",message="Password should contain minimum 1 letter and 1 digit, use only latin letters")
     private String password;
     @Transient
-    @NotBlank
     private String confirmPassword;
     @NotBlank(message="First name can't be empty")
     @Size(min=1, max=16,message="First name length must be between 3 and 16")
@@ -94,6 +93,14 @@ public class UserAccount implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     public String getFirstName() {

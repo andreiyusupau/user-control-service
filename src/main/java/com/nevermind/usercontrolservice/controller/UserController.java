@@ -25,7 +25,7 @@ public class UserController {
 
     private final UserAccountService userAccountService;
 
-    public UserController(UserAccountService userAccountService){
+    public UserController(UserAccountService userAccountService) {
         this.userAccountService = userAccountService;
     }
 
@@ -33,8 +33,8 @@ public class UserController {
     public String getAllUserAccounts(@RequestParam Optional<String> username,
                                      @RequestParam Optional<Role> role,
                                      Model model,
-                                     @PageableDefault(size=1) Pageable pageable) {
-        Page<UserAccount> page=userAccountService.findAll(username,role,pageable);
+                                     @PageableDefault(size = 1) Pageable pageable) {
+        Page<UserAccount> page = userAccountService.findAll(username, role, pageable);
         model.addAttribute("page", page);
         model.addAttribute("userAccounts", page.getContent());
         return "list";
@@ -44,8 +44,8 @@ public class UserController {
     public String filterUserAccounts(@RequestParam Optional<String> username,
                                      @RequestParam Optional<Role> role,
                                      Model model,
-                                     @PageableDefault(size=1) Pageable pageable) {
-        Page<UserAccount> page=userAccountService.findAll(username,role,pageable);
+                                     @PageableDefault(size = 1) Pageable pageable) {
+        Page<UserAccount> page = userAccountService.findAll(username, role, pageable);
         model.addAttribute("page", page);
         model.addAttribute("userAccounts", page.getContent());
         return "list";
@@ -53,7 +53,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public String getUserAccount(@PathVariable Long id, Model model) {
-        Optional<UserAccount> userAccount= userAccountService.findById(id);
+        Optional<UserAccount> userAccount = userAccountService.findById(id);
         userAccount.ifPresent(account -> model.addAttribute("userAccount", account));
 
         return "view";
@@ -62,32 +62,36 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/new")
     public String createUserAccount(Model model) {
-        model.addAttribute("userAccount",new UserAccount());
+        model.addAttribute("userAccount", new UserAccount());
         return "new";
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/new")
-    public String addUserAccount(@Valid @ModelAttribute  UserAccount userAccount, BindingResult bindingResult) {
-    if (bindingResult.hasErrors()){
-       return "new";
-    }else {
-        userAccountService.add(userAccount);
-    }
-        return "list";
+    public String addUserAccount(@Valid @ModelAttribute UserAccount userAccount, BindingResult bindingResult,Model model) {
+       if(userAccount.getPassword()!=null&&!userAccount.getPassword().equals(userAccount.getConfirmPassword())){
+           model.addAttribute("passwordError","Passwords are different!");
+       }
+
+        if (bindingResult.hasErrors()||!userAccountService.add(userAccount)) {
+            return "new";
+        } else {
+                return "list";
+        }
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{id}/edit")
     public String editUserAccount(@PathVariable Long id, Model model) {
-        Optional<UserAccount> userAccount= userAccountService.findById(id);
+        Optional<UserAccount> userAccount = userAccountService.findById(id);
         userAccount.ifPresent(account -> model.addAttribute("userAccount", account));
         return "edit";
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}/edit")
-    public @ResponseBody String updateUserAccount(@ModelAttribute UserAccount userAccount) {
+    public @ResponseBody
+    String updateUserAccount(@ModelAttribute UserAccount userAccount) {
         userAccountService.save(userAccount);
         return "Edited";
     }
