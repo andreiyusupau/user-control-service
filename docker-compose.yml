@@ -1,0 +1,21 @@
+version: '3.5'
+services:
+  user-control-service:
+    container_name: user-control-service
+    image: andreiyusupau/user-control-service
+    build:
+      context: .
+      dockerfile: Docker/app.Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgresdb
+  postgresdb:
+    image: postgres:12.4-alpine
+    container_name: postgresdb
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=userservicepassword
+      - POSTGRES_USER=userserviceadmin
+      - POSTGRES_DB=user_control_service

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet"
+          href="/webjars/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <title>User Account List</title>
+</head>
+<body>
+
+<form action="#" th:action="@{/user}" method="post">
+    <p>Username: <input type="text" th:name="username" /></p>
+    <p>Role: <select th:name="role">
+        <option></option>
+        <option th:value="'USER'" th:text="User"></option>
+        <option th:value="'ADMIN'" th:text="Admin"></option>
+    </select></p>
+    <input type="submit" value="Filter" />
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <th> ID </th>
+        <th> Username </th>
+        <th> First name </th>
+        <th> Last name </th>
+        <th> Role </th>
+        <th> Status </th>
+        <th> Created at </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${userAccounts.empty}">
+        <td colspan="7"> No user accounts available </td>
+    </tr>
+    <tr th:each="userAccount : ${userAccounts}">
+        <td><span th:text="${userAccount.id}"> id </span></td>
+        <td><span th:text="${userAccount.username}"> Username </span></td>
+        <td><span th:text="${userAccount.firstName}"> First name </span></td>
+        <td><span th:text="${userAccount.lastName}"> Last name </span></td>
+        <td><span th:text="${userAccount.role}"> Role </span></td>
+        <td><span th:text="${userAccount.status}"> Status </span></td>
+        <td><span th:text="${userAccount.createdAt}"> Created At </span></td>
+        <td><a th:href="@{/user/${userAccount.id}/edit}" class="btn btn-primary btn-lg active" role="button">Edit user</a></td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="pagination-div">
+    <span th:if="${page.hasPrevious()}">
+        <a th:href="@{/user(page=${page.number},size=${page.size})}">Previous</a>
+    </span>
+    <th:block th:each="i: ${#numbers.sequence(0, page.totalPages - 1)}">
+        <span th:if="${page.number == i}" class="selected">[[${i}+1]]</span>
+        <span th:unless="${page.number == i}">
+             <a th:href="@{/user(page=${i},size=${page.size})}">[[${i}+1]]</a>
+        </span>
+    </th:block>
+    <span th:if="${page.hasNext()}">
+        <a th:href="@{/user(page=${page.number+1},size=${page.size})}">Next</a>
+    </span>
+</div>
+<a th:href="@{/user/new}" class="btn btn-primary btn-lg active" role="button">Create new user</a>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+<script src="/webjars/popper.js/2.0.2/umd/popper.min.js"></script>
+<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

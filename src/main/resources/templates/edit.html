@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet"
+          href="/webjars/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <title>Edit</title>
+
+</head>
+<body>
+<form th:action="@{/user/{id}/edit}" th:object="${userAccount}" method="post">
+    <p th:text="'ID: '+*{id}"></p>
+    <p>Username: <input type="text" th:field="*{username}" /></p>
+    <p>First name: <input type="text" th:field="*{firstName}" /></p>
+    <p>Last name: <input type="text" th:field="*{lastName}" /></p>
+    <p>Role: <select th:field="*{role}">
+        <option th:value="'USER'" th:text="User"></option>
+        <option th:value="'ADMIN'" th:text="Admin"></option>
+    </select></p>
+    <p>Status: <select th:field="*{status}">
+        <option th:value="'ACTIVE'" th:text="Active"></option>
+        <option th:value="'INACTIVE'" th:text="Inactive"></option>
+    </select></p>
+    <input type="submit" value="Update" />
+</form>
+<script src="/webjars/popper.js/2.0.2/umd/popper.min.js"></script>
+<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
