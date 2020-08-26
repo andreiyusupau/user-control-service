@@ -49,7 +49,7 @@
 
 <div class="pagination-div">
     <span th:if="${page.hasPrevious()}">
-        <a th:href="@{/user(page=${page.number-1},size=${page.size})}">Previous</a>
+        <a th:href="@{/user(page=${page.number},size=${page.size})}">Previous</a>
     </span>
     <th:block th:each="i: ${#numbers.sequence(0, page.totalPages - 1)}">
         <span th:if="${page.number == i}" class="selected">[[${i}+1]]</span>
@@ -61,7 +61,6 @@
         <a th:href="@{/user(page=${page.number+1},size=${page.size})}">Next</a>
     </span>
 </div>
-
 <form th:action="@{/logout}" method="post">
     <input type="submit" value="Sign Out"/>
 </form>
