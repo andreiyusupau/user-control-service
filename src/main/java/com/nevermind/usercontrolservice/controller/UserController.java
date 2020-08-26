@@ -90,9 +90,9 @@ public class UserController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}/edit")
-    public @ResponseBody
+    public
     String updateUserAccount(@ModelAttribute UserAccount userAccount) {
         userAccountService.save(userAccount);
-        return "Edited";
+        return "list";
     }
 }

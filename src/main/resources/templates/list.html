@@ -43,6 +43,7 @@
         <td><span th:text="${userAccount.role}"> Role </span></td>
         <td><span th:text="${userAccount.status}"> Status </span></td>
         <td><span th:text="${userAccount.createdAt}"> Created At </span></td>
+        <td><a th:href="@{/user/${userAccount.id}/edit}" class="btn btn-primary btn-lg active" role="button">Edit user</a></td>
     </tr>
     </tbody>
 </table>
@@ -61,6 +62,7 @@
         <a th:href="@{/user(page=${page.number+1},size=${page.size})}">Next</a>
     </span>
 </div>
+<a th:href="@{/user/new}" class="btn btn-primary btn-lg active" role="button">Create new user</a>
 <form th:action="@{/logout}" method="post">
     <input type="submit" value="Sign Out"/>
 </form>
